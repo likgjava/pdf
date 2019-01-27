@@ -18,7 +18,7 @@ public class Main {
             PdfWatermark.setWatermark(SOURCE_FILE_PATH, new_file);
         } else {
             // 加载配置文件
-            String configFile = "C:\\PdfWatermark/pdf.properties";
+            String configFile = args[0] + "/pdf.properties";
             Properties prop = new Properties();
             prop.load(new FileInputStream(configFile));
             Enumeration<Object> elements = prop.elements();
@@ -26,7 +26,7 @@ public class Main {
                 Object filePath = elements.nextElement();
                 String new_file = makeNewFilePath(filePath.toString());
 
-                PdfWatermark.setWatermark(SOURCE_FILE_PATH, new_file);
+                PdfWatermark.setWatermark(filePath.toString(), new_file);
             }
         }
     }
