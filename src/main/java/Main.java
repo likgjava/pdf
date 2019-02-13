@@ -1,4 +1,5 @@
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -20,7 +21,7 @@ public class Main {
             // 加载配置文件
             String configFile = args[0] + "/pdf.properties";
             Properties prop = new Properties();
-            prop.load(new FileInputStream(configFile));
+            prop.load(new InputStreamReader(new FileInputStream(configFile), "UTF-8"));
             Enumeration<Object> elements = prop.elements();
             while (elements.hasMoreElements()) {
                 Object filePath = elements.nextElement();
