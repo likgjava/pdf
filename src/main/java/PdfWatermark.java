@@ -40,9 +40,9 @@ public class PdfWatermark {
             content.setGState(gs);
             content.beginText();
             content.setColorFill(Color.LIGHT_GRAY);
-            content.setFontAndSize(base, 40);
+            content.setFontAndSize(base, 45);
             content.setTextMatrix(70, 200);
-            content.showTextAligned(Element.ALIGN_CENTER, "传智播客 www.itcast.cn", 300, 350, 55);
+            content.showTextAligned(Element.ALIGN_CENTER, "传智播客-黑马程序员", 300, 420, 45);
 
 //            Image image = Image.getInstance("C:\\Users\\likgj\\Pictures/福.jpg");
 //            image.setAbsolutePosition(200, 206); // set the first background
