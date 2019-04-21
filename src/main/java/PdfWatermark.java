@@ -28,7 +28,8 @@ public class PdfWatermark {
 //        BaseFont base = BaseFont.createFont(BaseFont.TIMES_ROMAN, "Cp1252", false);
 //        BaseFont base = BaseFont.createFont("C:/windows/fonts/simsun.ttc,1", "Cp1252", false);
 //        BaseFont base = BaseFont.createFont("C:/windows/fonts/simsun.ttc,1", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        BaseFont base = BaseFont.createFont("C:\\Windows\\Fonts\\STKAITI.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+//        BaseFont base = BaseFont.createFont("C:\\Windows\\Fonts\\STKAITI.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+        BaseFont base = BaseFont.createFont("C:\\Windows\\Fonts\\simkai.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
         PdfGState gs = new PdfGState();
         gs.setFillOpacity(0.2f);
 

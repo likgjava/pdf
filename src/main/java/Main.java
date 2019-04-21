@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class Main {
 
-    private static final String SOURCE_FILE_PATH = "C:\\Users\\likgj\\Desktop\\1.pdf";
+    private static final String SOURCE_FILE_PATH = "C:\\Users\\Administrator\\Desktop\\1.pdf";
 
     public static void main(String[] args) throws Exception {
 
