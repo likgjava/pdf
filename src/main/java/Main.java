@@ -16,7 +16,7 @@ public class Main {
             String new_file = makeNewFilePath(SOURCE_FILE_PATH);
 
             // 将pdf文件先加水印然后输出
-            PdfWatermark.setWatermark(SOURCE_FILE_PATH, new_file);
+            PdfWatermarkUtil.setWatermark(SOURCE_FILE_PATH, new_file);
         } else {
             // 加载配置文件
             String configFile = args[0] + "/pdf.properties";
@@ -27,7 +27,7 @@ public class Main {
                 Object filePath = elements.nextElement();
                 String new_file = makeNewFilePath(filePath.toString());
 
-                PdfWatermark.setWatermark(filePath.toString(), new_file);
+                PdfWatermarkUtil.setWatermark(filePath.toString(), new_file);
             }
         }
     }
