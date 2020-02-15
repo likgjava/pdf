@@ -11,11 +11,91 @@ public class ImgWatermarkUtil {
 
     public static void main(String[] args) {
         String centerContent = "黑马程序员";  // 中间水印内容
-        String footContent = "@黑马程序员-软件测试";  // 中间水印内容
+        String footContent = "@黑马程序员-软件测试";  // 脚注水印内容
         String tarImgPath = makeNewFilePath(srcImgPath);
 
-        ImgWatermarkUtil.addWaterMarkToContent(srcImgPath, tarImgPath, centerContent);
-        ImgWatermarkUtil.addWaterMarkToFoot(srcImgPath, tarImgPath, footContent);
+//        ImgWatermarkUtil.addWaterMarkToContent(srcImgPath, tarImgPath, centerContent);
+//        ImgWatermarkUtil.addWaterMarkToFoot(srcImgPath, tarImgPath, footContent);
+        ImgWatermarkUtil.addWaterMarkToContentAndFoot(srcImgPath, tarImgPath, centerContent, footContent);
+    }
+
+    /**
+     * 添加内容和脚注水印
+     *
+     * @param srcImgPath    源图片路径
+     * @param tarImgPath    保存的图片路径
+     * @param centerContent 中间水印内容
+     * @param footContent   脚注水印内容
+     */
+    public static void addWaterMarkToContentAndFoot(String srcImgPath, String tarImgPath,
+                                                    String centerContent, String footContent) {
+        try {
+            // 读取原图片信息
+            File srcImgFile = new File(srcImgPath);//得到文件
+            Image srcImg = ImageIO.read(srcImgFile);//文件转化为图片
+            int srcImgWidth = srcImg.getWidth(null);//获取图片的宽
+            int srcImgHeight = srcImg.getHeight(null);//获取图片的高
+            System.out.println("srcImgWidth=" + srcImgWidth);
+            System.out.println("srcImgHeight=" + srcImgHeight);
+
+            // 创建画笔
+            BufferedImage bufImg = new BufferedImage(srcImgWidth, srcImgHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = bufImg.createGraphics();
+            g.drawImage(srcImg, 0, 0, srcImgWidth, srcImgHeight, null);
+
+            // 添加脚注水印
+            Font font = new Font("微软雅黑", Font.PLAIN, 16); // 水印字体
+            g.setFont(font);              //设置字体
+            g.setColor(Color.BLACK); //设置水印颜色
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));//设置水印文字透明度
+            int watermarkLength = getWatermarkLength(footContent, g);
+            int x_font = srcImgWidth - watermarkLength - 10;
+            int y_font = srcImgHeight - font.getSize();
+            g.drawString(footContent, x_font, y_font);  //画出水印
+
+            // 添加中心内容水印
+            int degree = -45; //设置水印文字的旋转角度
+            font = new Font("微软雅黑", Font.PLAIN, 20); // 水印字体
+            g.setColor(Color.GRAY); //设置水印颜色
+            g.setFont(font);              //设置字体
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.2f));//设置水印文字透明度
+            g.rotate(Math.toRadians(degree), (double) srcImgWidth / 2, (double) srcImgHeight / 2); //设置水印旋转
+
+            //设置水印的坐标
+            int space = 50; // 水印间距
+            int watermarkWidth = getWatermarkLength(centerContent, g) + space;
+            int watermarkHeight = font.getSize() + space;
+            System.out.println(String.format("watermarkWidth=%s watermarkHeight=%s", watermarkWidth, watermarkHeight));
+
+            // 计算最大覆盖长度（可以想象成是圆的直径）
+            int maxSrcLength = (int) Math.sqrt(srcImgWidth * srcImgWidth + srcImgHeight * srcImgHeight);
+            int maxRows = maxSrcLength / watermarkHeight;
+            System.out.println(String.format("maxSrcLength=%s maxRows=%s", maxSrcLength, maxRows));
+            // 计算虚拟原点
+            int vx = (srcImgWidth / 2) - (maxSrcLength / 2);
+            int vy = (srcImgHeight / 2) - (maxSrcLength / 2);
+            System.out.println(String.format("vx=%s vy=%s", vx, vy));
+
+            for (int i = 0; i < maxRows; i++) {
+                int y = vy + (i + 1) * watermarkHeight;
+                for (int j = 0; j < maxRows; j++) {
+                    int x = vx + j * watermarkWidth;
+                    g.drawString(centerContent, x, y); //画出水印
+                }
+            }
+
+
+            g.dispose();
+
+            // 输出图片
+            FileOutputStream outImgStream = new FileOutputStream(tarImgPath);
+            ImageIO.write(bufImg, "png", outImgStream);
+            System.out.println("添加水印完成");
+            outImgStream.flush();
+            outImgStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
